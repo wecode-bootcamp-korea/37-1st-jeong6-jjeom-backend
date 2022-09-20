@@ -20,7 +20,7 @@ myDataSource.initialize()
       console.log("Data Source has been initialized!")
   })
 
-app.use(cors())
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
