@@ -5,10 +5,9 @@ const jwt = require('jsonwebtoken')
 const { userDao } = require('../models')
 
 const validatePassword = (password) => {
-    const passwordRegex = /^.{8,}$/
+    const passwordRegex = /^.{8,20}$/
         //영문 숫자 8개이상 20개이하
     if(!passwordRegex.test(password)) {
-        console.log(8)
         const error = new Error('INVALID_PASSWORD')
         error.statusCode = 400
 
@@ -21,7 +20,6 @@ const validateEmail = (email) => {
     //계정 도메인 최상위.최상위 도메인(net/com)
 
 	if (!emailRegex.test(email)) {
-        console.log(9)
 		const error = new Error('INVALID_EMAIL')
 		error.statusCode = 400
 
@@ -29,11 +27,10 @@ const validateEmail = (email) => {
 	}
 }
 
-const validatePhoneNumber =  (phonenumber) => {
+const validatePhoneNumber =  (phoneNumber) => {
     const phonenumberRegex = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$/
 
-    if (!phonenumberRegex.test(phonenumber)) {
-        console.log(10)
+    if (!phonenumberRegex.test(phoneNumber)) {
         const error = new Error ('INVALID_PHONENUMBER')
         error.statusCode =400
 
@@ -52,14 +49,18 @@ const getUserbyId = async(id) => {
     return await userDao.getUserbyId(id)
 }
 
-const signUp= async (email, password, phonenumber, name) =>{
+const signUp= async (email, password, phoneNumber, name) =>{
+
     validateEmail(email)
+
     validatePassword(password)
-    validatePhoneNumber(phonenumber)
+
+    validatePhoneNumber(phoneNumber)
 
     const hashPassword = await hashedPassword(password)
 
-    return await userDao.createUser(email, hashPassword, phonenumber, name)
+    return await userDao.createUser(email, hashPassword, phoneNumber, name)
+
 }
 
 const signIn = async (email, password) => {
