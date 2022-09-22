@@ -1,23 +1,44 @@
+const { getProduct } = require('../controllers/categoryController')
+const { getProductbyId } = require('../services/categoryService')
 const appDataSource  =require('./datasource')
 
 const getCategoryId = async (categoriesId) => {
     const result = await appDataSource.query(
         `
         SELECT
-            p.name,
-            p.price,
-            p.standard_unit,
-            p.tumbnail_url,
-            p.description_url,
-            p.anti_bio
-        From categories as c
-        JOIN product as p
-        on c.id = p.categories_id
+            product.name,
+            product.price,
+            product.standard_unit,
+            product.tumbnail_url,
+            product.anti_bio
+        From categories
+        JOIN product
+        on categories.id = product.categories_id 
+        where categories.id = ?
         `, [categoriesId]
     )
-    return result[0]
+    return result [0]
+}
+
+const getProductId = async (categoriesId, productId) => {
+    const result = await appDataSource.query(
+        `
+        SELECT
+            product.name,
+            product.price,
+            product.standard_unit,
+            product.description_url,
+        From categories
+        JOIN product
+        on categories.id = product.categories_id 
+        where categories.id = ?
+        AND product.id = ?
+        `, [categoriesId, productId]
+    )
+    return result [0]
 }
 
 module.exports = { 
-    getCategoryId
+    getCategoryId,
+    getProductId
 }
