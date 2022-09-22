@@ -1,4 +1,5 @@
-require('dotenv').config()
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -17,6 +18,7 @@ app.get('/ping', function (req, res, next) {
 
 app.all('*', (req, res, next) => {
   const err = new Error(`Can't find ${req.originalUrl} on the Server`)
+
   err.statusCode = 404;
 
   next(err)
