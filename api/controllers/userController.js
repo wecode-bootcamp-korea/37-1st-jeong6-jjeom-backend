@@ -15,7 +15,7 @@ const signUp =asyncWrap(async (req,res) => {
     res.status(200).json({message:"success"});
 });
 
-const signIn = asyncWrap(async (req, res) => {
+const login = asyncWrap(async (req, res) => {
     const {email, password} = req.body;
 
     const accessToken = await userService.signIn(email, password)
@@ -25,5 +25,5 @@ const signIn = asyncWrap(async (req, res) => {
 
 module.exports = {
     signUp,
-    signIn
+    login
 }
