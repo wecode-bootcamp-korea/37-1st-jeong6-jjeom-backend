@@ -2,17 +2,17 @@ const {userService} = require('../services')
 const { asyncWrap } = require('../utils/error')
 
 const signUp =asyncWrap(async (req,res) => {
-    const {email, password, phonenumber, name} = req.body;
-
-    if(!email || !password || !phonenumber || !name) {
+    const {email, password, phoneNumber, name} = req.body;
+  
+    if(!email || !password || !phoneNumber || !name) {
         const error = new Error('KEY_ERROR')
         error.statusCode = 400;
 
         throw error
     }
-    const newId = await userService.signUp(email, password, phonenumber, name);
+    await userService.signUp(email, password, phoneNumber, name)
 
-    res.status(200).json({ID : newId});
+    res.status(200).json({message:"success"});
 });
 
 const signIn = asyncWrap(async (req, res) => {
