@@ -11,10 +11,8 @@ CREATE TABLE product (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP, 
     PRIMARY KEY(id),
-    CONSTRAINT product_id_fkey FOREIGN KEY (categories_id) REFERENCES categories(id)
+    CONSTRAINT categories_id_fkey FOREIGN KEY (categories_id) REFERENCES categories(id)
 );
-
 
 -- migrate:down
 DROP TABLE product;
-

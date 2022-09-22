@@ -8,4 +8,4 @@ CREATE TABLE categories (
 
 
 -- migrate:down
-DROP TABLE categories;
+DROP TABLE categories
