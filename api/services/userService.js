@@ -79,7 +79,7 @@ const signIn = async (email, password) => {
 			expiresIn: process.env.JWT_EXPIRES_IN 
 		}
 	)
-	return accessToken
+	return [accessToken, user.name]
 }
 
 module.exports ={

@@ -16,7 +16,7 @@ const createUser = async (email, password, phoneNumber, name) =>{
 }
 
 const getUserbyEmail = async (email) => {
-    const user = await appDataSource.query(
+    const [user] = await appDataSource.query(
         `
             SELECT
                 email,
