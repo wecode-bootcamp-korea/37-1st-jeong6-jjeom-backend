@@ -1,7 +1,10 @@
-const dataSource = require('./dataSource')
+
+const appDataSource = require('./datasource')
+const userDao = require('./userDao')
 const cartsDao = require('./cartsDao')
 
 module.exports = { 
-	dataSource,
+	appDataSource,
+	userDao,
 	cartsDao
 }

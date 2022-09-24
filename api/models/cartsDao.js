@@ -1,7 +1,7 @@
-const dataSource = require('./dataSource')
+const appDataSource = require('./dataSource')
 
 const getCarts = async (userId, optionProductId) => {
-	const result = await dataSource.query(`
+	const result = await appDataSource.query(`
 		SELECT 
 			c.id,
 			c.quantity,

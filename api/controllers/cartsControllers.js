@@ -1,7 +1,7 @@
 const { cartsService } = require('../services')
-const { catchAsync }  = require('../utils/error')
+const { asyncWrap }  = require('../utils/error')
 
-const cartsGet = catchAsync(async (req, res) => {
+const cartsGet = asyncWrap(async (req, res) => {
 	const userId = req.user.id
 
 	const carts = await cartsService.getCarts(userId, optionProductId)

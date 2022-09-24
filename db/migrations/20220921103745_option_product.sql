@@ -7,7 +7,7 @@ CREATE TABLE option_products (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(id), 
-    FOREIGN KEY (product_id) REFERENCES product(id)
+    CONSTRAINT option_products_product_id_fkey FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
 -- migrate:down
