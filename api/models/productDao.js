@@ -1,36 +1,33 @@
 const appDataSource  =require('./datasource')
 
 const getCategoryId = async (categoriesId) => {
-    const result = await appDataSource.query(
-        `
-        SELECT
-        product.name,
-        product.price,
-        product.standard_unit,
-        product.tumbnail_url,
-        product.anti_bio
-        From product
-        JOIN categories
-        ON categories.id = product.categories_id
-        WHERE categories.id = ?
-        `, [categoriesId]
-    )
-    return result[0]
-}
-
-const getProductId = async (categoriesId, productId) => {
+    console.log(categoriesId)
     const result = await appDataSource.query(
         `
         SELECT
             product.name,
             product.price,
             product.standard_unit,
-            product.description_url,
-        From categories
-        JOIN product
-        on categories.id = product.categories_id 
-        where categories.id = ?
-        AND product.id = ?
+            product.tumbnail_url,
+            product.anti_bio
+        From product
+        WHERE product.categories_id = ? 
+        `, [categoriesId]
+    )
+    return result
+}
+
+const getProductId = async (categoriesId, productId) => {
+    const result = await appDataSource.query(
+        `
+        SELECT
+            p.name,
+            p.price,
+            p.standard_unit,
+            p.description_url,
+            p.id
+        From product p
+        where p.categories_id= ? AND p.id = ?
         `, [categoriesId, productId]
     )
     return result [0]

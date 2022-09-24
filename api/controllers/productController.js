@@ -10,10 +10,11 @@ const getProduct = asyncWrap(async (req,res) => {
 });
 
 const getCategory = asyncWrap(async (req,res) => {
-    const { categoriesId } = req.query
+    
+    const {categoriesId} = req.query
 
-    const GetCategory = await productService.getCategorybyId( categoriesId )
-
+    const [GetCategory] = await productService.getCategorybyId( categoriesId )
+    
     res.status(200).json({GetCategory})
 });
 
