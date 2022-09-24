@@ -2,7 +2,7 @@ const {productService} = require('../services')
 const { asyncWrap } = require('../utils/error')
 
 const getProduct = asyncWrap(async (req,res) => {
-    const { categoriesId, productId } = req.body
+    const { categoriesId, productId } = req.query
 
     const getProduct = await productService.getProductbyId(categoriesId, productId)
 
@@ -10,7 +10,7 @@ const getProduct = asyncWrap(async (req,res) => {
 });
 
 const getCategory = asyncWrap(async (req,res) => {
-    const { categoriesId } = req.body
+    const { categoriesId } = req.query
 
     const GetCategory = await productService.getCategorybyId( categoriesId )
 
@@ -18,7 +18,7 @@ const getCategory = asyncWrap(async (req,res) => {
 });
 
 const getDescription = asyncWrap(async (req,res) => {
-    const { productId } = req.body
+    const { productId } = req.query
 
     const getDescription = await productService.getDescriptionbyId(productId)
 
