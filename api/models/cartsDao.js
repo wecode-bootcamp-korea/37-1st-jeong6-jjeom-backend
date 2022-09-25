@@ -1,7 +1,8 @@
 const  appDataSource  = require('./datasource')
 
 const getCartsByUserId = async (userId) => {
-	const carts = await appDataSource.query(
+	
+    const carts = await appDataSource.query(
         `
             SELECT
                 c.users_id, 
