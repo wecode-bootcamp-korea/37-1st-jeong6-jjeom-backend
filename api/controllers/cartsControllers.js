@@ -4,9 +4,9 @@ const { asyncWrap }  = require('../utils/error')
 const cartsGet = asyncWrap(async (req, res) => {
 	const { userId, optionProductsId }= req.query
 	
-	const result = await cartsService.getCarts(userId, optionProductsId)
+	const [cart] = await cartsService.getCarts(userId, optionProductsId)
 
-	res.status(201).json({ result })
+	res.status(201).json({ cart })
 })
 
 module.exports = {
