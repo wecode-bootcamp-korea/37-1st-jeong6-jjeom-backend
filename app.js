@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(route)
 
 app.get('/ping', function (req, res, next) {
+  console.log(req.query)
     res.json({message : 'pong'})
   })
 

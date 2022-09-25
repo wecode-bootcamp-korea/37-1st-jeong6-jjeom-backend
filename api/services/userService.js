@@ -1,4 +1,4 @@
-const bcrypt =require('bcrypt')
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 
@@ -6,7 +6,7 @@ const { userDao } = require('../models')
 
 const validatePassword = (password) => {
     const passwordRegex = /^.{8,20}$/
-        //영문 숫자 8개이상 20개이하
+        
     if(!passwordRegex.test(password)) {
         const error = new Error('INVALID_PASSWORD')
         error.statusCode = 400
