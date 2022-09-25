@@ -7,7 +7,7 @@ const createUser = async (email, password, phoneNumber, name) =>{
         INSERT INTO users (
             email,
             password,
-            phoneNumber,
+            phone_number,
             name
         ) VALUES (?, ?, ?, ?)
     `, [email, password, phoneNumber, name]
@@ -21,7 +21,7 @@ const getUserbyEmail = async (email) => {
             SELECT
                 email,
                 password,
-                phoneNumber,
+                phone_number,
                 name
             FROM users
             WHERE email=?
