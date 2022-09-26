@@ -1,24 +1,24 @@
-const {productService} = require('../services')
+const { productService } = require('../services')
 const { asyncWrap } = require('../utils/error')
 
-const getProductByProductsId = asyncWrap(async (req,res) => {
-    const { categoriesId, productId } = req.query
+const getProductById = asyncWrap(async (req,res) => {
+    const { productId }  = req.params
 
-    const getProduct = await productService.getProductByProductsId(categoriesId, productId)
+    const getProduct = await productService.getProductById(productId)
 
     res.status(200).json({getProduct})
 });
 
 const getProductsByCategoryId = asyncWrap(async (req,res) => {
 
-    const categoriesId = req.query.categoriesId
-    const GetCategory = await productService.getProductsByCategoryId( categoriesId )
+    const {categoryId} = req.params
+    const result = await productService.getProductsByCategoryId( categoryId )
     
-    res.status(200).json({GetCategory})
+    res.status(200).json({result})
 });
 
 const getDescriptionByProductId = asyncWrap(async (req,res) => {
-    const { productId } = req.query
+    const  {productId}  = req.params
 
     const getDescription = await productService.getDescriptionByProductId(productId)
 
@@ -26,7 +26,7 @@ const getDescriptionByProductId = asyncWrap(async (req,res) => {
 });
 
 module.exports = {
-    getProductByProductsId,
+    getProductById,
     getProductsByCategoryId,
     getDescriptionByProductId
 }

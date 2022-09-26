@@ -1,17 +1,17 @@
 const { productDao } = require('../models')
 
-const getProductByProductId = async(categoriesId, productId) =>{
-        return await productDao.getProductById(categoriesId, productId)
+const getProductById = async(productId) =>{
+        return await productDao.getProductById(productId)
 }
 
-const getProductsByCategoryId = async(categoriesId) => {
-        return await productDao.getProductsByCategoryId(categoriesId)
+const getProductsByCategoryId = async(categoryId) => {
+        return await productDao.getProductsByCategoryId(categoryId)
 }
 const getDescriptionByProductId = async(productId) => {
-    return await productDao.getDescriptionByProductId(productId)
+        return await productDao.getDescriptionByProductId(productId)
 }
 module.exports ={ 
-    getProductByProductId,
+    getProductById,
     getProductsByCategoryId,
     getDescriptionByProductId,
 }

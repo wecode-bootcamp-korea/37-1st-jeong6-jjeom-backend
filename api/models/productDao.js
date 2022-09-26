@@ -1,7 +1,7 @@
 const appDataSource  =require('./datasource')
 
-const getProductsByCategoryId = async (categoriesId) => {
-    const result = await appDataSource.query(
+const getProductsByCategoryId = async (categoryId) => {
+    return await appDataSource.query(
         `
         SELECT
             product.name,
@@ -11,29 +11,43 @@ const getProductsByCategoryId = async (categoriesId) => {
             product.anti_bio
         From product
         WHERE product.categories_id = ? 
-        `, [categoriesId]
+        `, [categoryId]
     )
-   
-    return result
 }
 
-const getProductByProductsId = async (categoriesId, productId) => {
-    const result = await appDataSource.query(
+const getProductById = async (productId) => {
+        
+    const thick =await appDataSource.query(
+        `
+        SELECT op.thick 
+        FROM option_products op
+        WHERE op.product_id = ? 
+        `, [productId]
+    )
+    const [product] = await appDataSource.query(
         `
         SELECT
             p.name,
             p.price,
             p.standard_unit,
-            p.description_url,
-            p.id
+            p.description_url 
         From product p
-        where p.categories_id= ? AND p.id = ?
-        `, [categoriesId, productId]
+        WHERE p.id = ?
+        `, [productId]
     )
-    return result [0]
+    product.thick =thick
+    return product
 }
+
 const getDescriptionByProductId = async (productId) => {
-    const result = await appDataSource.query(
+    const thick =await appDataSource.query(
+        `
+        SELECT op.thick 
+        FROM option_products op
+        WHERE op.product_id = ? 
+        `, [productId]
+    )
+    const [result] = await appDataSource.query(
         `
         SELECT
             product.name,
@@ -51,11 +65,12 @@ const getDescriptionByProductId = async (productId) => {
         where product.id = ?
         `, [productId]
     )
-    return result [0]
+    result.thick=thick
+    return result
 }
 
 module.exports = { 
     getProductsByCategoryId,
-    getProductByProductsId,
+    getProductById,
     getDescriptionByProductId
 }
