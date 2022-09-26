@@ -14,7 +14,7 @@ const getCategoryId = async (categoriesId) => {
         WHERE product.categories_id = ? 
         `, [categoriesId]
     )
-    return result
+    return result[0]
 }
 
 const getProductId = async (categoriesId, productId) => {
