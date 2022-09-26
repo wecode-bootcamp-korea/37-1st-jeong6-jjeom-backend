@@ -14,7 +14,7 @@ const updateCart = asyncWrap(async (req, res) => {
     const userId = req.userId
     const result = await cartsServiece.updateCart(userId, optionProductsId, quantity)
     
-    res.status(201).json({result})
+    res.status(200).json({result})
 })
 
 module.exports = {
