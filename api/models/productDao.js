@@ -1,7 +1,6 @@
 const appDataSource  =require('./datasource')
 
-const getCategoryId = async (categoriesId) => {
-    console.log(categoriesId)
+const getProductsByCategoryId = async (categoriesId) => {
     const result = await appDataSource.query(
         `
         SELECT
@@ -14,10 +13,11 @@ const getCategoryId = async (categoriesId) => {
         WHERE product.categories_id = ? 
         `, [categoriesId]
     )
-    return result[0]
+   
+    return result
 }
 
-const getProductId = async (categoriesId, productId) => {
+const getProductByProductsId = async (categoriesId, productId) => {
     const result = await appDataSource.query(
         `
         SELECT
@@ -32,7 +32,7 @@ const getProductId = async (categoriesId, productId) => {
     )
     return result [0]
 }
-const getDescriptionId = async (productId) => {
+const getDescriptionByProductId = async (productId) => {
     const result = await appDataSource.query(
         `
         SELECT
@@ -55,7 +55,7 @@ const getDescriptionId = async (productId) => {
 }
 
 module.exports = { 
-    getCategoryId,
-    getProductId,
-    getDescriptionId
+    getProductsByCategoryId,
+    getProductByProductsId,
+    getDescriptionByProductId
 }
