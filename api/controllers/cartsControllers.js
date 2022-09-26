@@ -6,7 +6,7 @@ const addCart = asyncWrap(async (req, res) => {
     const userId = req.userId
     if (!optionProductsId || !quantity) {
         const error = new Error("KEY ERROR");
-        err.statusCode = 400;
+        error.statusCode = 400;
         throw error;
     }
     await cartsServiece.addCart(userId, optionProductsId, quantity)
@@ -19,7 +19,7 @@ const updateCart = asyncWrap(async (req, res) => {
     const userId = req.userId
     if (!optionProductsId || !quantity) {
         const error = new Error("KEY ERROR");
-        err.statusCode = 400;
+        error.statusCode = 400;
         throw error;
     }
     await cartsServiece.updateCart(userId, optionProductsId, quantity)
