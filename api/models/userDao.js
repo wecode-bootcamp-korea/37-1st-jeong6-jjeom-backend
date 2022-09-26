@@ -7,10 +7,21 @@ const createUser = async (email, password, phoneNumber, name) =>{
         INSERT INTO users (
             email,
             password,
-            phoneNumber,
+            phone_number,
             name
         ) VALUES (?, ?, ?, ?)
     `, [email, password, phoneNumber, name]
+    )
+    return result
+}
+
+const getUserbyId = async (id) => {
+    const [result] =  await appDataSource.query(
+        `SELECT
+            *
+        FROM users
+        WHERE id = ?`,
+        [id]
     )
     return result
 }
@@ -19,9 +30,10 @@ const getUserbyEmail = async (email) => {
     const [user] = await appDataSource.query(
         `
             SELECT
+                id,
                 email,
                 password,
-                phoneNumber,
+                phone_number,
                 name
             FROM users
             WHERE email=?
@@ -32,5 +44,6 @@ const getUserbyEmail = async (email) => {
 
 module.exports = {
     createUser,
+    getUserbyId,
     getUserbyEmail
 }

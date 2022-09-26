@@ -44,9 +44,7 @@ const hashedPassword = async(plainPassword) =>{
     return await bcrypt.hash(plainPassword, saltingPassword); 
 }
 
-const getUserbyId = async(id) => {
-    return await userDao.getUserbyId(id)
-}
+
 
 const signUp= async (email, password, phoneNumber, name) =>{
     validateEmail(email)
@@ -85,5 +83,4 @@ const signIn = async (email, password) => {
 module.exports ={
     signUp,
     signIn,
-    getUserbyId
 }
