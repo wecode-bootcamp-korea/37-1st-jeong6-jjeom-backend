@@ -1,14 +1,13 @@
 const { cartsDao } = require('../models')
 
 const getCartbyId = async (userId) => {
-    const result = await cartsDao.getCartsByUserId(userId)
-    if(result ===undefined){
-        const err = new Error('CART_NO_EXIST');
-        err.statusCode = 404;
-
-        throw err;
+    const cart = await cartsDao.getCartsByUserId(userId)
+    for(i=0 ; i<cart.length; i=i+1){
+       cart[i].price =cart[i].quantity*cart[i].price
     }
+    return cart
 }
+
 module.exports ={
     getCartbyId
 }

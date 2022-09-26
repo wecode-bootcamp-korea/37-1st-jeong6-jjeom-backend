@@ -2,7 +2,7 @@ const {cartsService} = require('../services')
 const { asyncWrap } = require('../utils/error')
 
 const getCart = asyncWrap(async(req, res) =>{
-    const userId = req.query.userId
+    const userId = req.user.Id
   
     const getCartbyId = await cartsService.getCartbyId(userId)
 
