@@ -12,9 +12,9 @@ const addCart = asyncWrap(async (req, res) => {
 const updateCart = asyncWrap(async (req, res) => {
     const {optionProductsId, quantity} = req.query
     const userId = req.userId
-    const result = await cartsServiece.updateCart(userId, optionProductsId, quantity)
+    await cartsServiece.updateCart(userId, optionProductsId, quantity)
     
-    res.status(200).json({result})
+    res.status(200).json({message:"success"})
 })
 
 module.exports = {
