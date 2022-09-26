@@ -9,6 +9,15 @@ const addCart = asyncWrap(async (req, res) => {
     res.status(201).json({insertId})
 })
 
+const updateCart = asyncWrap(async (req, res) => {
+    const {optionProductsId, quantity} = req.query
+    const userId = req.userId
+    const result = await cartsServiece.updateCart(userId, optionProductsId, quantity)
+    
+    res.status(201).json({result})
+})
+
 module.exports = {
-	addCart
+	addCart,
+    updateCart
 }
