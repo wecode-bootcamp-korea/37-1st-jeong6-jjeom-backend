@@ -5,5 +5,5 @@ const cartsServiece = require('./cartsService')
 module.exports = { 
 	userService,
 	productService,
-  catsSerivce,
+	cartsServiece,
 }
