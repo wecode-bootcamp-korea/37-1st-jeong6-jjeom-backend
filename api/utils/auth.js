@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 
-const {userService} =require('../services')
+
+const {userDao} = require("../models")
 
 const {asyncWrap} = require('./error')
 
@@ -16,7 +17,7 @@ const loginRequired = asyncWrap(async (req, res, next) => {
         }
     const payload = await jwt.verify(accessToken, process.env.JWT_SECRET)
 
-    const user = await userService.getUserbyId(payload)
+    const user = await userDao.getUserbyId(payload.id)
 
     if(!user){
         const error = new Error('USER_DOES_NOT_EXIST')
@@ -24,7 +25,7 @@ const loginRequired = asyncWrap(async (req, res, next) => {
 
         return next(error)
     }
-    req.user = user;
+    req.userId = user.id;
     next();
 })
 

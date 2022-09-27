@@ -12,7 +12,7 @@ const signUp =asyncWrap(async (req,res) => {
     }
     await userService.signUp(email, password, phoneNumber, name)
 
-    res.status(200).json({message:"success"});
+    res.status(200).json({message:"signUp success"});
 });
 
 const signIn = asyncWrap(async (req, res) => {
@@ -20,7 +20,7 @@ const signIn = asyncWrap(async (req, res) => {
 
     const [accessToken, userName] = await userService.signIn(email, password)
 
-    res.status(200).json({ accessToken, message:"success", username: userName})
+    res.status(200).json({ accessToken, message:"signIn success", username: userName})
 })
 
 module.exports = {
