@@ -29,5 +29,5 @@ const updateCart = asyncWrap(async (req, res) => {
 
 module.exports = {
 	addCart,
-    updateCart
+    updateCart,
 }

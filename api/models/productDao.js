@@ -72,5 +72,5 @@ const getDescriptionByProductId = async (productId) => {
 module.exports = { 
     getProductsByCategoryId,
     getProductById,
-    getDescriptionByProductId
+    getDescriptionByProductId,
 }

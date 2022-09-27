@@ -1,20 +1,15 @@
 const { orderService } = require('../services')
 const {asyncWrap} = require('../utils/error')
 
-const creatOrder = asyncWrap(async (req, res) => {
-    const {deliveryInformationId, paymentMethodId, } = req.body;
+const createOrder = asyncWrap(async (req, res) => {
     const userId = req.userId
+    const { deliveryInformationId, paymentMethodId, depositDeadline } = req.body;
     
-    if (!optionProductsId || !quantity) {
-        const error = new Error("KEY ERROR");
-        error.statusCode = 400;
-        throw error;
-    }
-    await orderService.addCart(userId, optionProductsId, quantity)
+    await orderService.createOrder(userId, deliveryInformationId, paymentMethodId, depositDeadline)
     
-    res.status(201).json({message:"add success"})
+    res.status(201).json({message:"order success"})
 })
 
 module.exports = {
-	creatOrder
+	createOrder
 }
