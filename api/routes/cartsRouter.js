@@ -1,10 +1,11 @@
 const express = require('express');
 
-const { cartsController } = require('../controllers');
-const {loginRequired} = require('../utils/auth')
-
+const { cartsControllers } = require('../controllers');
+const { loginRequired } = require('../utils/auth')
 const router = express.Router();
 
-router.get('/user', loginRequired, cartsController.getCart)
+router.post('/post', loginRequired, cartsControllers.addCart)
+router.patch('/patch', loginRequired, cartsControllers.updateCart)
+router.get('/user', loginRequired, cartsControllers.getCart)
 
-module.exports= router;
+module.exports = router;

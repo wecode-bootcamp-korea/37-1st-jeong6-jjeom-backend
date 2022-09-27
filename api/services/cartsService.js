@@ -1,4 +1,4 @@
-const { cartsDao } = require('../models')
+const { cartsDao } = require("../models");
 
 const getCartbyId = async (userId) => {
     const cart = await cartsDao.getCartsByUserId(userId)
@@ -8,6 +8,24 @@ const getCartbyId = async (userId) => {
     return cart
 }
 
-module.exports ={
-    getCartbyId
+const addCart = async (userId, optionProductsId, quantity) => {
+    
+    const {cart} = await cartsDao.getCartsExists(userId, optionProductsId);
+    if (+cart) {
+        const num = await cartsDao.getCartQuantity(userId, optionProductsId);
+        quantity += num.quantity;
+        return await cartsDao.updateCart (userId, optionProductsId, quantity);
+    }
+    return await cartsDao.addCart(userId, optionProductsId, quantity);
+} 
+
+const updateCart = async (userId, optionProductsId, quantity) => {
+    return await cartsDao.updateCart( userId, optionProductsId, quantity )
+}
+
+
+module.exports = {
+    addCart,
+    updateCart,
+    getCartbyId,
 }
