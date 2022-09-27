@@ -1,9 +1,10 @@
+const cartsControllers = require('./cartsControllers')
 const userController = require('./userController')
 const productController = require('./productController')
-const cartsController = require('./productController')
 
 module.exports={ 
+    cartsControllers,
     userController,
     productController,
-    cartsController,
 }
+
