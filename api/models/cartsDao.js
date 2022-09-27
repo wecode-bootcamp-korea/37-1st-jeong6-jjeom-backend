@@ -24,13 +24,12 @@ const getCartQuantity = async (userId, optionProductsId) =>{
 }
 
 const updateCart = async (userId, optionProductsId, quantity) => {
-    const result = await appDataSource.query(
+    return await appDataSource.query(
         `UPDATE carts SET
             quantity = ?
             WHERE users_id = ? AND option_products_id = ?`,
-            [userId, optionProductsId, quantity]
+            [quantity, userId, optionProductsId, ]
     )
-    return result
 }
 
 const getCartsExists = async (userId, optionProductsId) => {
