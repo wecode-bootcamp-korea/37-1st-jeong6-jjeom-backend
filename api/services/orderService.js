@@ -18,8 +18,12 @@ const deleteCart = async(userId, cartId) => {
     return await orderDao.deleteCart(userId, cartId)
 }
 
+const getOrderId = async(userId) => {
+    return await orderDao.getOrderId(userId)
+}
 module.exports = {
     getOrderInfo,
     getCompleteInfo,
     deleteCart,
+    getOrderId,
 }

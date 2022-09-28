@@ -67,32 +67,6 @@ const getCompleteInfo =async(userId, orderId)=>{
     return result 
 }
 
-
-//  이러면 쿼리문으로
-// const getCompleteInfotwoo = async(userId) => {
-//     const result = await appDataSource.query(
-//         `SELECT
-//             delivery_information.arrival_date,
-//             orders.quntity,
-//             p.price
-//         FROM orders o
-//         JOIN delivery_information di
-//         ON o.delivery_information_id = di.id
-//         JOIN users u
-//         ON u.id = di.users_id
-//         JOIN order_products op
-//         ON o.id = op.order_id
-//         JOIN option_products opp
-//         ON opp.id = op.option_products_id
-//         JOIN products p
-//         ON p.id = opp.product_id
-//         where u.id = ?
-//         AND o.created_at = 
-//         `, [userId]
-//      )
-//      return result
-// }
-
 const deleteCart = async(userId, cartId) => {
     const deleteCartRows = (await  appDataSource.query(
         `
