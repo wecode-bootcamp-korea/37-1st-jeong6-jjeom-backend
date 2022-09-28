@@ -12,7 +12,7 @@ const deliveryInformationOfOder = async (userId, name, phoneNumber, address, arr
         )VALUES(?, ?, ?, ?, ?, ?)`,
         [userId, name, phoneNumber, address, arrivalDate, deliveryMethod]
     )
-    return resultg
+    return result
 }
 
 
@@ -55,9 +55,6 @@ const stockInOrder = async (optionProductsId, quantity) => {
     return result
 }
 
-const deadlineOfOrder = async () => {
-
-}
 
 
 
@@ -65,6 +62,5 @@ module.exports = {
     createOrder,
     deliveryInformationOfOder,
     stockInOrder,
-    deadlineOfOrder,
     orderProductsOfOder,
 }
