@@ -8,5 +8,5 @@ module.exports = {
 	appDataSource,
 	userDao,
 	productDao,
-  cartsDao,
+    cartsDao,
 }
