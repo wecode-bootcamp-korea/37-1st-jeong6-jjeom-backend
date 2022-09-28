@@ -14,7 +14,12 @@ const getCompleteInfo = async(userId) => {
     return completeInfo
 }
 
+const deleteCart = async(userId, cartId) => {
+    return await orderDao.deleteCart(userId, cartId)
+}
+
 module.exports = {
     getOrderInfo,
     getCompleteInfo,
+    deleteCart,
 }

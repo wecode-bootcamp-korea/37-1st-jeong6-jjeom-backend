@@ -23,7 +23,16 @@ const getCompleteInfo = asyncWrap(async(req,res) => {
     res.status(200).json({completeInfo})
 })
 
+const deleteCart = asyncWrap(async(req,res) => {
+    const userId = req.userId
+    const { cartId } = req.query.cartId
+
+    await orderService.deleteCart(userId, cartId)
+    
+    res.status(200).json({message : "SUCCESS_DELETE"})
+})
 module.exports = {
    getOrderInfo, 
    getCompleteInfo,
+   deleteCart,
 }
