@@ -5,5 +5,7 @@ const router = express.Router();
 
 router.post('/post', loginRequired, cartsControllers.addCart)
 router.patch('/patch', loginRequired, cartsControllers.updateCart)
+router.delete('/delete', loginRequired, cartsControllers.deleteCart)
 
 module.exports = router;
+
