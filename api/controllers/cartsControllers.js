@@ -36,8 +36,17 @@ const updateCart = asyncWrap(async (req, res) => {
     res.status(200).json({message:"update success"})
 })
 
+
+const deleteCart = asyncWrap(async (req,res) => {
+    const userId = req.userId
+    const cartIds = req.query.cartIds
+    await cartsService.deleteCart(userId, cartIds)
+    res.status(201).json({messge : "SUCCESS_DELETE_CART"})
+});
+
 module.exports = {
 	addCart,
     updateCart,
     getCart,
+    deleteCart,
 }
