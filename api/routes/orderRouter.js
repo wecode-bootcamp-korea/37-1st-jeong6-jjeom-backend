@@ -1,10 +1,11 @@
 const express = require('express');
-const { orderControllers } = require('../controllers');
+const { orderController } = require('../controllers');
 const { loginRequired } = require('../utils/auth')
 const router = express.Router();
 
-router.post('/post', loginRequired, cartsControllers.addCart)
-router.post('/post', loginRequired, cartsControllers.createOrder)
-router.patch('/patch', loginRequired, cartsControllers.updateCart)
+router.post('/deliveryInformation', loginRequired, orderController.deliveryInformationOfOder)
+router.post('/oderProducts', loginRequired, orderController.orderProductsOfOder)
+router.post('/post', loginRequired, orderController.createOrder)
+router.patch('/patch', loginRequired, orderController.stockInOrder)
 
 module.exports = router;
