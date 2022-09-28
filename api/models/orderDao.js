@@ -12,7 +12,7 @@ const deliveryInformationOfOder = async (userId, name, phoneNumber, address, arr
         )VALUES(?, ?, ?, ?, ?, ?)`,
         [userId, name, phoneNumber, address, arrivalDate, deliveryMethod]
     )
-    return result
+    return resultg
 }
 
 
