@@ -1,3 +1,4 @@
+const { cartsControllers } = require("../controllers")
 const appDataSource = require("./datasource")
 
 const deliveryInformationOfOder = async (userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
@@ -15,7 +16,6 @@ const deliveryInformationOfOder = async (userId, name, phoneNumber, address, arr
     return result
 }
 
-
 const createOrder = async (deliveryInformationId, paymentMethodId, depositDeadline) => {
     const result = await appDataSource.query(
         `INSERT INTO orders(
@@ -29,13 +29,14 @@ const createOrder = async (deliveryInformationId, paymentMethodId, depositDeadli
     return result
 }
 
-const orderProductsOfOder = async (optionProductsId, orderId) =>{
+const orderProductsOfOder = async (optionProductsId, orderId, quantity) =>{
     const result = await appDataSource.query(
-        `INSERT INTO orders(
+        `INSERT INTO order_products(
             option_products_id,
             order_id,
+            quantity,
             option_products_status_id
-        )VALUES(?, ?, 1)`,
+        )VALUES(?, ?, ?, 1)`,
         [optionProductsId, orderId]
     )
     return result
@@ -43,7 +44,7 @@ const orderProductsOfOder = async (optionProductsId, orderId) =>{
 
 
 const stockInOrder = async (optionProductsId, quantity) => {
-    const result = appDataSource.query(
+    const result = await appDataSource.query(
         `UPDATE
             option_products
         SET
@@ -55,7 +56,15 @@ const stockInOrder = async (optionProductsId, quantity) => {
     return result
 }
 
-
+const deleteCart = async (userId, optionProductsId) => {
+    const result = await appDataSource.query(
+        `DELETE FROM carts
+        WHERE users_id = ?
+        AND option_products_id = ?`,
+        [userId, optionProductsId]
+    )
+    return result
+}
 
 
 module.exports = {
@@ -63,4 +72,5 @@ module.exports = {
     deliveryInformationOfOder,
     stockInOrder,
     orderProductsOfOder,
+    deleteCart,
 }

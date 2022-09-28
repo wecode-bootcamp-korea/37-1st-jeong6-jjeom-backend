@@ -1,10 +1,10 @@
 const appDataSource = require("./datasource")
 
 const getCartsByUserId = async (userId) => {
-    console.log(userId)
     const carts = await appDataSource.query(
         `
             SELECT
+                c.id,
                 c.users_id, 
                 p.tumbnail_url,
                 p.name,
@@ -53,7 +53,7 @@ const updateCart = async (userId, optionProductsId, quantity) => {
         `UPDATE carts SET
             quantity = ?
             WHERE users_id = ? AND option_products_id = ?`,
-            [quantity, userId, optionProductsId, ]
+            [quantity, userId, optionProductsId]
     )
 }
 
@@ -68,18 +68,18 @@ const getCartsExists = async (userId, optionProductsId) => {
     return result
 }
 
-const deleteCheckCart = async(userId, cartIds) =>{
+const deleteCheckCart = async(userId, cartsId) =>{
     
     const deleteCartRows = (await appDataSource.query( 
         `
             DELETE FROM carts
             Where carts.users_id =?
             AND carts.id in (?)
-        `, [userId, cartIds]
+        `, [userId, cartsId]
         )).affectedRows
     
-    if (Array.isArray(cartIds)) {
-        if (deleteCartRows !== cartIds.length){
+    if (Array.isArray(cartsId)) {
+        if (deleteCartRows !== cartsId.length){
             throw new Error ('UNEXPECTED_NUMBER_OF_RECORDS_DELETED')}
     } else {
         if (![0, 1].includes(deleteCartRows)) {
