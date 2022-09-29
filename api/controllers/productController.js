@@ -12,7 +12,7 @@ const getProductById = asyncWrap(async (req,res) => {
 const getProductsByCategoryId = asyncWrap(async (req,res) => {
 
     const {categoryId} = req.params
-    const result = await productService.getProductsByCategoryId( categoryId )
+    const result = await productService.getProductsByCategoryId(categoryId)
     
     res.status(200).json({result})
 });

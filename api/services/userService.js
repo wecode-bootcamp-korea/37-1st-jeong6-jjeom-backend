@@ -77,6 +77,7 @@ const signIn = async (email, password) => {
 			expiresIn: process.env.JWT_EXPIRES_IN 
 		}
 	)
+    console.log(accessToken);
 	return [accessToken, user.name]
 }
 

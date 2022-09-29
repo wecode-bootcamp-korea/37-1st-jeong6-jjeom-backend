@@ -1,18 +1,22 @@
 const appDataSource  =require('./datasource')
 
 const getProductsByCategoryId = async (categoryId) => {
-    return await appDataSource.query(
+    const result = await appDataSource.query(
         `
         SELECT
+            categories.banner_url,
+            product.id,
             product.name,
             product.price,
             product.standard_unit,
             product.tumbnail_url,
             product.anti_bio
         From product
+        JOIN categories ON product.categories_id = categories.id
         WHERE product.categories_id = ? 
         `, [categoryId]
     )
+    return result
 }
 
 const getProductById = async (productId) => {
@@ -28,6 +32,8 @@ const getProductById = async (productId) => {
         `
         SELECT
             p.name,
+            p.id,
+            p.tumbnail_url,
             p.price,
             p.standard_unit,
             p.description_url 
@@ -42,7 +48,8 @@ const getProductById = async (productId) => {
 const getDescriptionByProductId = async (productId) => {
     const thick =await appDataSource.query(
         `
-        SELECT op.thick 
+        SELECT 
+            op.thick 
         FROM option_products op
         WHERE op.product_id = ? 
         `, [productId]
@@ -72,5 +79,5 @@ const getDescriptionByProductId = async (productId) => {
 module.exports = { 
     getProductsByCategoryId,
     getProductById,
-    getDescriptionByProductId
+    getDescriptionByProductId,
 }

@@ -8,11 +8,9 @@ const {asyncWrap} = require('./error')
 const loginRequired = asyncWrap(async (req, res, next) => {
 
     const accessToken = req.headers.authorization
-
         if(!accessToken) {
             const error= new Error('NEED_TOKEN')
             error.statusCode = 401
-
             return next(error)
         }
     const payload = await jwt.verify(accessToken, process.env.JWT_SECRET)
