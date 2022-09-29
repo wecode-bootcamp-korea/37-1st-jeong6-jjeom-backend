@@ -27,14 +27,14 @@ const getOrderInfo = asyncWrap(async(req,res) => {
 
 const getCompleteInfo = asyncWrap(async(req,res) => {
     const userId = req.userId
-    
-    const completeInfo = await orderService.getCompleteInfo(userId)
+    const {orderId} = req.query
+    const completeInfo = await orderService.getCompleteInfo(userId, orderId)
     res.status(200).json({completeInfo})
 })
 
 const deleteCart = asyncWrap(async(req,res) => {
     const userId = req.userId
-    const { cartId } = req.query.cartId
+    const { cartId } = req.query
 
     await orderService.deleteCart(userId, cartId)
     
