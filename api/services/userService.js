@@ -45,7 +45,6 @@ const hashedPassword = async(plainPassword) =>{
 }
 
 
-
 const signUp= async (email, password, phoneNumber, name) =>{
     validateEmail(email)
     validatePassword(password)

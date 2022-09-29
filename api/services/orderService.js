@@ -12,7 +12,7 @@ const makingOrder = async (userId, optionProductsId, name, phoneNumber, address,
         await orderDao.createOrderProducts(optionProductsId, order.insertId, quantity); 
         await orderDao.getStockOfOptionProduct(optionProductsId, quantity);
         await orderDao.deleteCart(userId, optionProductsId);
-
+//qunatity이대로 괞찮은가?
     } catch(err){
         await queryRunner.rollbackTransaction();
         const error = new Error(`ROLLBACK : ${err.message}`);

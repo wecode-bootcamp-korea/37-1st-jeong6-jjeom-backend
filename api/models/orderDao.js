@@ -15,26 +15,31 @@ const createDeliveryInformation = async (userId, name, phoneNumber, address, arr
     return result
 }
 
-// const createDepositDeadline =async (arrivalDate) =>{
-//     cosnt money = await appDataSource.query(
-//         `
-//         `
-//         , [arrivalDate]
-//     )
-// }
+const createDepositDeadline =async (arrivalDate) => {
+    const result = await appDataSource.query(
+        `(INSERT INTO orders(
+    
+        )VALUES(?)`,
+         [arrivalDate]
+    )
+    return result
+}
+
+// not null 순서
 
 const createOrder = async (deliveryInformationId, paymentMethodId) => {
     const result = await appDataSource.query(
         `INSERT INTO orders(
             delivery_information_id,
             payment_method_id,
-            order_status_id,
+            order_status_id
         )VALUES(?, ?, 1)`,
         [deliveryInformationId, paymentMethodId ]
     )
     return result
 }
-
+//od id v프론트에 보내야
+//카트아이디를 받아서 op.id를 뽑아내야지 않을까?
 const createOrderProducts = async (optionProductsId, orderId, quantity) =>{
     const result = await appDataSource.query(
         `INSERT INTO order_products(
