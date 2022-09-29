@@ -15,15 +15,22 @@ const createDeliveryInformation = async (userId, name, phoneNumber, address, arr
     return result
 }
 
-const createOrder = async (deliveryInformationId, paymentMethodId, depositDeadline) => {
+// const createDepositDeadline =async (arrivalDate) =>{
+//     cosnt money = await appDataSource.query(
+//         `
+//         `
+//         , [arrivalDate]
+//     )
+// }
+
+const createOrder = async (deliveryInformationId, paymentMethodId) => {
     const result = await appDataSource.query(
         `INSERT INTO orders(
             delivery_information_id,
             payment_method_id,
-            deposit_deadline,
-            order_status_id
-        )VALUES(?, ?, ?, 1)`,
-        [deliveryInformationId, paymentMethodId, depositDeadline]
+            order_status_id,
+        )VALUES(?, ?, 1)`,
+        [deliveryInformationId, paymentMethodId ]
     )
     return result
 }
@@ -34,9 +41,9 @@ const createOrderProducts = async (optionProductsId, orderId, quantity) =>{
             option_products_id,
             order_id,
             quantity,
-            option_products_status_id
+            order_products_status_id
         )VALUES(?, ?, ?, 1)`,
-        [optionProductsId, orderId]
+        [optionProductsId, orderId, quantity]
     )
     return result
 }

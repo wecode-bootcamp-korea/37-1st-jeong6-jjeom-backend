@@ -3,9 +3,9 @@ const {asyncWrap} = require('../utils/error')
 
 const makingOrder = asyncWrap(async (req, res) => {
     const userId = req.userId;
-    const { optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod,paymentMethodId,depositDeadline, quantity } = req.body;
+    const { optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod,paymentMethodId, quantity } = req.body;
     
-    await orderService.makingOrder(userId, optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod,paymentMethodId,depositDeadline, quantity);
+    await orderService.makingOrder(userId, optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod,paymentMethodId,quantity);
     
     res.status(201).json({message:"order_success"})
 })

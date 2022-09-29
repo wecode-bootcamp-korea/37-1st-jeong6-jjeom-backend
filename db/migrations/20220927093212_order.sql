@@ -12,5 +12,4 @@ CREATE TABLE orders (
 );
 
 -- migrate:down
-DROP TABLE order
-s
+DROP TABLE orders
