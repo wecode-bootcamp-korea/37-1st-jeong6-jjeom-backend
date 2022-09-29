@@ -10,7 +10,6 @@ const validatePassword = (password) => {
     if(!passwordRegex.test(password)) {
         const error = new Error('INVALID_PASSWORD')
         error.statusCode = 400
-
         throw error
     }
 }

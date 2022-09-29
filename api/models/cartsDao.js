@@ -34,6 +34,7 @@ const addCart = async (userId, optionProductsId, quantity) => {
         )VALUES(?, ?, ?)`,
         [userId, optionProductsId, quantity]
     )
+    console.log(result)
     return result
 }
 

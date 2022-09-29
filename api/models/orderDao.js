@@ -1,7 +1,8 @@
 const appDataSource = require("./datasource")
+const { query } = require('express');
 
-const createDeliveryInformation = async (userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
-    const result = await appDataSource.query(
+const createDeliveryInformation = async (queryRunner, userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
+    const result = await queryRunner.query(
         `INSERT INTO delivery_information(
             users_id,
             name,
@@ -11,37 +12,23 @@ const createDeliveryInformation = async (userId, name, phoneNumber, address, arr
             delivery_method
         )VALUES(?, ?, ?, ?, ?, ?)`,
         [userId, name, phoneNumber, address, arrivalDate, deliveryMethod]
-    )
-    return result
-}
+    );
+    return result;
+};
 
-const createDepositDeadline =async (arrivalDate) => {
-    const result = await appDataSource.query(
-        `(INSERT INTO orders(
-    
-        )VALUES(?)`,
-         [arrivalDate]
-    )
-    return result
-}
-
-// not null 순서
-
-const createOrder = async (deliveryInformationId, paymentMethodId) => {
-    const result = await appDataSource.query(
+const createOrder = async (queryRunner, deliveryInformationId) => {
+    const result = await queryRunner.query(
         `INSERT INTO orders(
             delivery_information_id,
-            payment_method_id,
             order_status_id
-        )VALUES(?, ?, 1)`,
-        [deliveryInformationId, paymentMethodId ]
-    )
-    return result
-}
-//od id v프론트에 보내야
-//카트아이디를 받아서 op.id를 뽑아내야지 않을까?
-const createOrderProducts = async (optionProductsId, orderId, quantity) =>{
-    const result = await appDataSource.query(
+        )VALUES(?, 1)`,
+        [deliveryInformationId]
+    );
+    return result;
+};
+
+const createOrderProducts = async (queryRunner, optionProductsId, orderId, quantity) =>{
+    const result = await queryRunner.query(
         `INSERT INTO order_products(
             option_products_id,
             order_id,
@@ -49,13 +36,13 @@ const createOrderProducts = async (optionProductsId, orderId, quantity) =>{
             order_products_status_id
         )VALUES(?, ?, ?, 1)`,
         [optionProductsId, orderId, quantity]
-    )
-    return result
-}
+    );
+    return result;
+};
 
 
-const getStockOfOptionProduct = async (optionProductsId, quantity) => {
-    const result = await appDataSource.query(
+const getStockOfOptionProduct = async (queryRunner, optionProductsId, quantity) => {
+    const result = await queryRunner.query(
         `UPDATE
             option_products
         SET
@@ -67,21 +54,32 @@ const getStockOfOptionProduct = async (optionProductsId, quantity) => {
     return result
 }
 
-const deleteCartAtOder = async (userId, optionProductsId) => {
-    const result = await appDataSource.query(
-        `DELETE FROM carts
-        WHERE users_id = ?
-        AND option_products_id = ?`,
-        [userId, optionProductsId]
-    )
-    return result
-}
+const deleteCartAtOder = async(queryRunner, userId, optionProductsId) => {
+    const deleteCartRows = await queryRunner.query(
+        `
+            DELETE FROM carts
+            WHERE users_id = ?
+            AND   option_products_id = ?
+        `, [userId, optionProductsId]
+        )
+    // .affectedRows
+    // if (Array.isArray(optionProductsId)){
+    //     if(optionProductsId.length !== deleteCartRows) {
+    //         throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')}
+    //     }
+    // else {
+    //     if (!(0,1).includes(`${deleteCartRows}`)){
+    //         throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')
+    //     }
+    return deleteCartRows
+    }
 
 const getOrderInfo = async(userId, cartId)=>{
     const result = await appDataSource.query(
         `
-            SELECT 
-                u.name,
+            SELECT
+                u.id,
+                u.name as userName,
                 u.phone_number,
                 u.email,
                 p.name,
@@ -89,7 +87,6 @@ const getOrderInfo = async(userId, cartId)=>{
                 p.price,
                 op.thick,
                 c.quantity
-                u.id
             FROM product p
             JOIN option_products op
             ON p.id = op.id
@@ -103,13 +100,14 @@ const getOrderInfo = async(userId, cartId)=>{
             c.id IN (?)
         `,[userId, cartId]
     )
+    console.log(result)
     return result   
 }
 
 const getOrderId = async(userId) => {
     `
         SELECT
-            orders.id
+            o.id
         FROM orders o
         JOIN delivery_information di
         ON o.delivery_information_id = di.id
@@ -119,53 +117,34 @@ const getOrderId = async(userId) => {
     `, [userId]
 }
 
-const getCompleteInfo =async(userId, orderId)=>{
-    const result = await appDataSource.query(
+const getCompleteInfo =async(userId, optionProductsId)=>{
+    const result = await queryrunner.query(
         `
-        SELECT 
-            o.deposit_deadline,
+        SELECT
+            DATE_SUB(di.arrival_date, interval 1 day),
             op.quantity,
             p.price
-        FROM orders o
-        JOIN delivery_information di
-        ON o.delivery_information_id = di.id
-        JOIN users u
-        ON u.id = di.users_id
-        JOIN order_products op
-        ON o.id = op.order_id
-        JOIN option_products opp
-        on opp.id = op.order_products_id  
-        join product p
-        on opp.product_id = p.id
-        where u.id = ?
-        AND o.id in (?)
-        `, [userId, orderId]
+        FROM option_products
+        JOIN products
+        ON option_products.product_id = products.id
+        JOIN order_products
+        ON option_produts.id = order_products.option_products_id
+        JOIN orders
+        ON order_products.order_id = orders.id
+        JOIN delivery_information
+        ON orders.delivery_information_id = delivery_information.id
+        JOIN users
+        ON delivery_information.users_id = users.id
+        WHERE users.id = ?
+        AND option_products.id in (?)
+        `, [userId, optionProductsId]
     )
-    return result 
+    return result
 }
-
-const deleteCart = async(userId, cartId) => {
-    const deleteCartRows = (await  appDataSource.query(
-        `
-            DELETE FROM carts
-            WHERE user_id = ?
-            AND   id = ?
-        `, [userId, cartId]
-        )). affectedRows
-    if (Array.isArray(cartId)){
-        if(cartId.length !== deleteCartRows) {
-            throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')}
-        }
-    else {if(!(0,1).includes(deleteCartRows)){
-            throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')}
-        }
-    return deleteCartRows
-    }
 
 module.exports = {
     getOrderInfo,
     getCompleteInfo,
-    deleteCart,
     getOrderId,
     deleteCartAtOder,
     createOrder,
