@@ -6,6 +6,6 @@ const orderService = require('./orderService')
 module.exports = { 
 	userService,
 	productService,
-	cartsService,
+    cartsService,
 	orderService,
 }

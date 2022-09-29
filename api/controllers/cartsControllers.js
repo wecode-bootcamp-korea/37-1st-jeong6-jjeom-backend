@@ -26,6 +26,7 @@ const addCart = asyncWrap(async (req, res) => {
 const updateCart = asyncWrap(async (req, res) => {
     const {optionProductsId, quantity} = req.query
     const userId = req.userId
+
     if (!optionProductsId || !quantity) {
         const error = new Error("KEY ERROR");
         error.statusCode = 400;
