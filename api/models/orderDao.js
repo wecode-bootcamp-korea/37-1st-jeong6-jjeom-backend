@@ -1,6 +1,6 @@
 const appDataSource = require("./datasource")
 
-const deliveryInformationOfOder = async (userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
+const createDeliveryInformation = async (userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
     const result = await appDataSource.query(
         `INSERT INTO delivery_information(
             users_id,
@@ -28,7 +28,7 @@ const createOrder = async (deliveryInformationId, paymentMethodId, depositDeadli
     return result
 }
 
-const orderProductsOfOder = async (optionProductsId, orderId, quantity) =>{
+const createOrderProducts = async (optionProductsId, orderId, quantity) =>{
     const result = await appDataSource.query(
         `INSERT INTO order_products(
             option_products_id,
@@ -42,7 +42,7 @@ const orderProductsOfOder = async (optionProductsId, orderId, quantity) =>{
 }
 
 
-const stockInOrder = async (optionProductsId, quantity) => {
+const getStockOfOptionProduct = async (optionProductsId, quantity) => {
     const result = await appDataSource.query(
         `UPDATE
             option_products
@@ -157,7 +157,7 @@ module.exports = {
     getOrderId,
     deleteCartAtOder,
     createOrder,
-    deliveryInformationOfOder,
-    stockInOrder,
-    orderProductsOfOder,
+    createDeliveryInformation,
+    getStockOfOptionProduct,
+    createOrderProducts,
 }
