@@ -28,6 +28,13 @@ const getProductById = async (productId) => {
         WHERE op.product_id = ? 
         `, [productId]
     )
+    const optionProductsId = await appDataSource.query(
+        `
+        SELECT op.id
+        FROM option_products op
+        WHERE op.product_id=?
+        `,[productId]
+    )
     const [product] = await appDataSource.query(
         `
         SELECT
@@ -36,11 +43,15 @@ const getProductById = async (productId) => {
             p.tumbnail_url,
             p.price,
             p.standard_unit,
-            p.description_url 
+            p.description_url,
+            option_products.id as optionid
         From product p
+        JOIN option_products
+        ON option_products.product_id = p.id
         WHERE p.id = ?
         `, [productId]
     )
+    product.optionProductsId=optionProductsId
     product.thick =thick
     return product
 }
@@ -76,8 +87,22 @@ const getDescriptionByProductId = async (productId) => {
     return result
 }
 
+
+const updateOption = async (productId )=> {
+    const result = await queryRunner.query(
+        `UPDATE
+            option_products
+        SET
+            stock = stock - ?
+        WHERE id = ?
+        `,
+        [optionProductsId, quantity]
+    )
+    return result
+}
 module.exports = { 
     getProductsByCategoryId,
     getProductById,
     getDescriptionByProductId,
+    updateOption
 }

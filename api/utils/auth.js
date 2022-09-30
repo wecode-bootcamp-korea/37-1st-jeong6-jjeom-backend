@@ -14,9 +14,7 @@ const loginRequired = asyncWrap(async (req, res, next) => {
             return next(error)
         }
     const payload = await jwt.verify(accessToken, process.env.JWT_SECRET)
-
     const user = await userDao.getUserbyId(payload.id)
-
     if(!user){
         const error = new Error('USER_DOES_NOT_EXIST')
         error.statusCode = 404

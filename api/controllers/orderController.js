@@ -3,16 +3,16 @@ const {asyncWrap} = require('../utils/error')
 
 const makingOrder = asyncWrap(async (req, res) => {
     const userId = req.userId;
-    const { optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod,paymentMethodId,depositDeadline, quantity } = req.body;
+    const { optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod, quantity } = req.body;
     
-    await orderService.makingOrder(userId, optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod,paymentMethodId,depositDeadline, quantity);
-    
-    res.status(201).json({message:"order_success"})
+    const result =await orderService.makingOrder(userId, optionProductsId, name, phoneNumber, address, arrivalDate, deliveryMethod, quantity);
+    // console.log(result)
+    res.status(201).json({result})
 })
 
 const getOrderInfo = asyncWrap(async(req,res) => {
     const userId = req.userId
-    const {cartId} =req.query.cartId   
+    const {cartId} =req.query
     
     if (!cartId) {
         const error = new Error("KEY ERROR");
@@ -25,21 +25,21 @@ const getOrderInfo = asyncWrap(async(req,res) => {
     res.status(200).json({message:"get_info_success", orderInfo})
 });
 
-const getCompleteInfo = asyncWrap(async(req,res) => {
-    const userId = req.userId
-    const {orderId} = req.query
-    const completeInfo = await orderService.getCompleteInfo(userId, orderId)
-    res.status(200).json({completeInfo})
-})
+// const getCompleteInfo = asyncWrap(async(req,res) => {
+//     const userId = req.userId
+//     const {orderId} = req.query
+//     const completeInfo = await orderService.getCompleteInfo(userId, orderId)
+//     res.status(200).json({completeInfo})
+// })
 
-const deleteCart = asyncWrap(async(req,res) => {
-    const userId = req.userId
-    const { cartId } = req.query
+// const deleteCart = asyncWrap(async(req,res) => {
+//     const userId = req.userId
+//     const { cartId } = req.query
 
-    await orderService.deleteCart(userId, cartId)
+//     await orderService.deleteCart(userId, cartId)
     
-    res.status(200).json({message : "SUCCESS_DELETE"})
-})
+//     res.status(200).json({message : "SUCCESS_DELETE"})
+// })
 
 const getOrderId = asyncWrap(async (req, res) => {
     const userId = req.userId
@@ -51,7 +51,7 @@ const getOrderId = asyncWrap(async (req, res) => {
 module.exports = {
     makingOrder,
    getOrderInfo, 
-   getCompleteInfo,
-   deleteCart,
+//    getCompleteInfo,
+//    deleteCart,
    getOrderId,
 }

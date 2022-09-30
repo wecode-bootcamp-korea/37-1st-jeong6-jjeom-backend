@@ -9,7 +9,7 @@ const getCartbyId = async (userId) => {
 }
 
 const addCart = async (userId, optionProductsId, quantity) => {
-    
+    console.log(userId, optionProductsId, quantity)
     const {cart} = await cartsDao.getCartsExists(userId, optionProductsId);
     if (+cart) {
         const num = await cartsDao.getCartQuantity(userId, optionProductsId);

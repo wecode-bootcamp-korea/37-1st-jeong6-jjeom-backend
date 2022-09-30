@@ -10,7 +10,6 @@ const validatePassword = (password) => {
     if(!passwordRegex.test(password)) {
         const error = new Error('INVALID_PASSWORD')
         error.statusCode = 400
-
         throw error
     }
 }
@@ -43,7 +42,6 @@ const hashedPassword = async(plainPassword) =>{
 
     return await bcrypt.hash(plainPassword, saltingPassword); 
 }
-
 
 
 const signUp= async (email, password, phoneNumber, name) =>{

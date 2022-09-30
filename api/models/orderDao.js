@@ -1,7 +1,7 @@
 const appDataSource = require("./datasource")
 
-const createDeliveryInformation = async (userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
-    const result = await appDataSource.query(
+const createDeliveryInformation = async (queryRunner, userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
+    const result = await queryRunner.query(
         `INSERT INTO delivery_information(
             users_id,
             name,
@@ -11,39 +11,37 @@ const createDeliveryInformation = async (userId, name, phoneNumber, address, arr
             delivery_method
         )VALUES(?, ?, ?, ?, ?, ?)`,
         [userId, name, phoneNumber, address, arrivalDate, deliveryMethod]
-    )
-    return result
-}
+    );
+    return result;
+};
 
-const createOrder = async (deliveryInformationId, paymentMethodId, depositDeadline) => {
-    const result = await appDataSource.query(
+const createOrder = async (queryRunner, deliveryInformationId) => {
+    const result = await queryRunner.query(
         `INSERT INTO orders(
             delivery_information_id,
-            payment_method_id,
-            deposit_deadline,
             order_status_id
-        )VALUES(?, ?, ?, 1)`,
-        [deliveryInformationId, paymentMethodId, depositDeadline]
-    )
-    return result
-}
+        )VALUES(?, 1)`,
+        [deliveryInformationId]
+    );
+    return result;
+};
 
-const createOrderProducts = async (optionProductsId, orderId, quantity) =>{
-    const result = await appDataSource.query(
+const createOrderProducts = async (queryRunner, optionProductsId, orderId, quantity) =>{
+    const result = await queryRunner.query(
         `INSERT INTO order_products(
             option_products_id,
             order_id,
             quantity,
-            option_products_status_id
+            order_products_status_id
         )VALUES(?, ?, ?, 1)`,
-        [optionProductsId, orderId]
-    )
-    return result
-}
+        [optionProductsId, orderId, quantity]
+    );
+    return result;
+};
 
 
-const getStockOfOptionProduct = async (optionProductsId, quantity) => {
-    const result = await appDataSource.query(
+const getStockOfOptionProduct = async (queryRunner, optionProductsId, quantity) => {
+    const result = await queryRunner.query(
         `UPDATE
             option_products
         SET
@@ -55,21 +53,32 @@ const getStockOfOptionProduct = async (optionProductsId, quantity) => {
     return result
 }
 
-const deleteCartAtOder = async (userId, optionProductsId) => {
-    const result = await appDataSource.query(
-        `DELETE FROM carts
-        WHERE users_id = ?
-        AND option_products_id = ?`,
-        [userId, optionProductsId]
-    )
-    return result
-}
+const deleteCartAtOder = async(queryRunner, userId, optionProductsId) => {
+    const deleteCartRows = await queryRunner.query(
+        `
+            DELETE FROM carts
+            WHERE users_id = ?
+            AND   option_products_id = ?
+        `, [userId, optionProductsId]
+        )
+    // .affectedRows
+    // if (Array.isArray(optionProductsId)){
+    //     if(optionProductsId.length !== deleteCartRows) {
+    //         throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')}
+    //     }
+    // else {
+    //     if (!(0,1).includes(`${deleteCartRows}`)){
+    //         throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')
+    //     }
+    return deleteCartRows
+    }
 
 const getOrderInfo = async(userId, cartId)=>{
     const result = await appDataSource.query(
         `
-            SELECT 
-                u.name,
+            SELECT
+                u.id,
+                u.name as userName,
                 u.phone_number,
                 u.email,
                 p.name,
@@ -77,10 +86,9 @@ const getOrderInfo = async(userId, cartId)=>{
                 p.price,
                 op.thick,
                 c.quantity
-                u.id
             FROM product p
             JOIN option_products op
-            ON p.id = op.id
+            ON p.id = op.product_id
             JOIN carts c
             ON c.option_products_id = op.id 
             JOIN users u
@@ -94,67 +102,37 @@ const getOrderInfo = async(userId, cartId)=>{
     return result   
 }
 
-const getOrderId = async(userId) => {
-    `
+
+const getCompleteInfo =async(queryRunner, userId, optionProductsId)=>{
+
+    const result = await queryRunner.query(
+        `
         SELECT
-            orders.id
-        FROM orders o
-        JOIN delivery_information di
-        ON o.delivery_information_id = di.id
-        JOIN users u
-        ON u.id = di.users_id
-        WHERE u.id = ?
-    `, [userId]
-}
-
-const getCompleteInfo =async(userId, orderId)=>{
-    const result = await appDataSource.query(
-        `
-        SELECT 
-            o.deposit_deadline,
-            op.quantity,
-            p.price
-        FROM orders o
-        JOIN delivery_information di
-        ON o.delivery_information_id = di.id
-        JOIN users u
-        ON u.id = di.users_id
-        JOIN order_products op
-        ON o.id = op.order_id
-        JOIN option_products opp
-        on opp.id = op.order_products_id  
-        join product p
-        on opp.product_id = p.id
-        where u.id = ?
-        AND o.id in (?)
-        `, [userId, orderId]
+            DATE_SUB(delivery_information.arrival_date, interval 1 day) as deadline,
+            order_products.quantity,
+            product.price
+        FROM option_products
+        JOIN product
+        ON option_products.product_id = product.id
+        JOIN order_products
+        ON option_products.id = order_products.option_products_id
+        JOIN orders
+        ON order_products.order_id = orders.id
+        JOIN delivery_information
+        ON orders.delivery_information_id = delivery_information.id
+        JOIN users
+        ON delivery_information.users_id = users.id
+        WHERE users.id = ?
+        AND order_products.id in (?);
+        `, [userId, optionProductsId]
     )
-    return result 
-}
 
-const deleteCart = async(userId, cartId) => {
-    const deleteCartRows = (await  appDataSource.query(
-        `
-            DELETE FROM carts
-            WHERE user_id = ?
-            AND   id = ?
-        `, [userId, cartId]
-        )). affectedRows
-    if (Array.isArray(cartId)){
-        if(cartId.length !== deleteCartRows) {
-            throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')}
-        }
-    else {if(!(0,1).includes(deleteCartRows)){
-            throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')}
-        }
-    return deleteCartRows
-    }
+    return result
+}
 
 module.exports = {
     getOrderInfo,
     getCompleteInfo,
-    deleteCart,
-    getOrderId,
     deleteCartAtOder,
     createOrder,
     createDeliveryInformation,
