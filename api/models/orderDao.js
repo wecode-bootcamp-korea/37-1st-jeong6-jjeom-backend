@@ -1,5 +1,4 @@
 const appDataSource = require("./datasource")
-const { query } = require('express');
 
 const createDeliveryInformation = async (queryRunner, userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
     const result = await queryRunner.query(
@@ -89,7 +88,7 @@ const getOrderInfo = async(userId, cartId)=>{
                 c.quantity
             FROM product p
             JOIN option_products op
-            ON p.id = op.id
+            ON p.id = op.product_id
             JOIN carts c
             ON c.option_products_id = op.id 
             JOIN users u
@@ -100,35 +99,23 @@ const getOrderInfo = async(userId, cartId)=>{
             c.id IN (?)
         `,[userId, cartId]
     )
-    console.log(result)
     return result   
 }
 
-const getOrderId = async(userId) => {
-    `
-        SELECT
-            o.id
-        FROM orders o
-        JOIN delivery_information di
-        ON o.delivery_information_id = di.id
-        JOIN users u
-        ON u.id = di.users_id
-        WHERE u.id = ?
-    `, [userId]
-}
 
-const getCompleteInfo =async(userId, optionProductsId)=>{
-    const result = await queryrunner.query(
+const getCompleteInfo =async(queryRunner, userId, optionProductsId)=>{
+
+    const result = await queryRunner.query(
         `
         SELECT
-            DATE_SUB(di.arrival_date, interval 1 day),
-            op.quantity,
-            p.price
+            DATE_SUB(delivery_information.arrival_date, interval 1 day) as deadline,
+            order_products.quantity,
+            product.price
         FROM option_products
-        JOIN products
-        ON option_products.product_id = products.id
+        JOIN product
+        ON option_products.product_id = product.id
         JOIN order_products
-        ON option_produts.id = order_products.option_products_id
+        ON option_products.id = order_products.option_products_id
         JOIN orders
         ON order_products.order_id = orders.id
         JOIN delivery_information
@@ -136,16 +123,16 @@ const getCompleteInfo =async(userId, optionProductsId)=>{
         JOIN users
         ON delivery_information.users_id = users.id
         WHERE users.id = ?
-        AND option_products.id in (?)
+        AND order_products.id in (?);
         `, [userId, optionProductsId]
     )
+
     return result
 }
 
 module.exports = {
     getOrderInfo,
     getCompleteInfo,
-    getOrderId,
     deleteCartAtOder,
     createOrder,
     createDeliveryInformation,
