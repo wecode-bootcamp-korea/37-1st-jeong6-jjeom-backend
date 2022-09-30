@@ -1,3 +1,6 @@
+![logo_w-1](https://user-images.githubusercontent.com/67556491/193203547-ebe92e5c-5444-4f41-ab43-fb48903d5fed.png)
+
+
 ## 정육쩜 **프로젝트 Front-end/Back-end 소개**
 
 - 초신선 육류를 주력으로 판매하는 쇼핑몰
