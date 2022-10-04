@@ -42,7 +42,7 @@
 
 ---
 
-![1차 모델링.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0f21b187-eb1c-4c65-b560-b072fd792117/1%EC%B0%A8_%EB%AA%A8%EB%8D%B8%EB%A7%81.png)
+![1차 모델링](https://user-images.githubusercontent.com/105404643/193738938-62efccdd-fd55-4978-9067-d06ea3dfefba.png)
 
 ## **시연 영상**
 
