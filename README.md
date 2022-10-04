@@ -41,7 +41,7 @@
 
 ---
 
-![1차 모델링.png](https://www.notion.so/READ-me-6d49115addc0478aa1be8a6813ed83dc#9cd65fbb6feb4ce88aa720644523a0d7)
+![1차 모델링](https://user-images.githubusercontent.com/105404643/193738938-62efccdd-fd55-4978-9067-d06ea3dfefba.png)
 
 ## **시연 영상**
 
@@ -53,7 +53,7 @@
 
 해당 발표 자료는 백엔드 부분의 설명을 위해 제작된 PPT입니다.
 
-[1차프로젝트 ppt.pdf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/02736809-ce7b-40ae-96c0-296b172ba862/1%EC%B0%A8%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_ppt.pdf)
+[1차프로젝트 ppt.pdf](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/02736809-ce7b-40ae-96c0-296b172ba862/1%EC%B0%A8%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_ppt.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221004%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221004T050215Z&X-Amz-Expires=86400&X-Amz-Signature=6c1886cee9e0703f02bb1f3559f557a52ac43777d1f1a6e7212fbd3c09573048&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%221%25EC%25B0%25A8%25ED%2594%2584%25EB%25A1%259C%25EC%25A0%259D%25ED%258A%25B8%2520ppt.pdf%22&x-id=GetObject)
 
 ---
 
@@ -62,3 +62,4 @@
 - 이 프로젝트는 ‘정육쩜' 사이트를 참고하여 학습 목적으로 제작되었습니다.
 - 이 프로젝트는 학습용으로 제작되었기 때문에 이 코드를 활용하여 이득을 취하거나 무단 배포할 경우 법적으로 문제될 수 있습니다.
 - 이 프로젝트에 사용된 사진을 무단으로 배포, 사용할 경우 법적으로 문제될 수 있습니다.
+>>>>>>> 86e4d258f7b7a04282bc07a8770b9cc099d7b6bf
