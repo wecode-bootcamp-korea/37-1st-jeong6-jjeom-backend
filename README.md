@@ -28,7 +28,7 @@
 > Front-End : React.js, sass
 > 
 
-> Back-End : My SQL, Bcrypt, Node.js
+> Back-End : My SQL, Bcrypt, Node.js, express, Typeorm, JsonWebToken
 > 
 
 > Common :  RESTful API
@@ -38,18 +38,29 @@
 
 ### 회원가입/로그인
 
-- 
+- BackEnd : Bcrypt 암호화와 JsonWebToken 인증을 적용한 회원가입, 로그인 기능 API 구현. 토큰 발행의 경우 미들웨어처럼 사용할 수 있도록 함.
 
 ### 메인페이지
 
-### 리스트
 
+### 리스트
+- BackEnd : 정보조회 API/GET, 옵션 선택 재고고려 API
+   
 ### 상세
+
+- BackEnd  : 옵션 선택 재고고려 API
 
 ### 장바구니
 
+- BackEnd  : 장바구니 CRUD 개발.
+             추가구현 장바구니 내에서 상품 선택 제거 가능(QueryString활용)
+
 ### 주문/결제
 
+- BackEnd : 오더 에 필요한 정보 제공 GET
+            QueryRunner를 활용하여 Transection 작성
+            (선택된 카트 상품 가져오기, 카트삭제, 오더생성, 재고관리 등)
+            
 ## **Reference**
 
 - 이 프로젝트는 [정육각](https://www.jeongyookgak.com/index) 사이트를 참조하여 학습목적으로 만들었습니다.
