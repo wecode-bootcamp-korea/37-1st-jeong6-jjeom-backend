@@ -19,8 +19,6 @@
 
 ## **모델링**
 
----
-
 ![1차 모델링](https://user-images.githubusercontent.com/105404643/193738938-62efccdd-fd55-4978-9067-d06ea3dfefba.png)
 
 ## **시연 영상**
