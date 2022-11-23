@@ -1,8 +1,16 @@
-const appDataSource = require("./datasource")
+const appDataSource = require("./datasource");
 
-const createDeliveryInformation = async (queryRunner, userId, name, phoneNumber, address, arrivalDate, deliveryMethod) => {
-    const result = await queryRunner.query(
-        `INSERT INTO delivery_information(
+const createDeliveryInformation = async (
+  queryRunner,
+  userId,
+  name,
+  phoneNumber,
+  address,
+  arrivalDate,
+  deliveryMethod
+) => {
+  const result = await queryRunner.query(
+    `INSERT INTO delivery_information(
             users_id,
             name,
             phone_number,
@@ -10,72 +18,72 @@ const createDeliveryInformation = async (queryRunner, userId, name, phoneNumber,
             arrival_date,
             delivery_method
         )VALUES(?, ?, ?, ?, ?, ?)`,
-        [userId, name, phoneNumber, address, arrivalDate, deliveryMethod]
-    );
-    return result;
+    [userId, name, phoneNumber, address, arrivalDate, deliveryMethod]
+  );
+  return result;
 };
 
 const createOrder = async (queryRunner, deliveryInformationId) => {
-    const result = await queryRunner.query(
-        `INSERT INTO orders(
+  const result = await queryRunner.query(
+    `INSERT INTO orders(
             delivery_information_id,
             order_status_id
         )VALUES(?, 1)`,
-        [deliveryInformationId]
-    );
-    return result;
+    [deliveryInformationId]
+  );
+  return result;
 };
 
-const createOrderProducts = async (queryRunner, optionProductsId, orderId, quantity) =>{
-    const result = await queryRunner.query(
-        `INSERT INTO order_products(
+const createOrderProducts = async (
+  queryRunner,
+  optionProductsId,
+  orderId,
+  quantity
+) => {
+  const result = await queryRunner.query(
+    `INSERT INTO order_products(
             option_products_id,
             order_id,
             quantity,
             order_products_status_id
         )VALUES(?, ?, ?, 1)`,
-        [optionProductsId, orderId, quantity]
-    );
-    return result;
+    [optionProductsId, orderId, quantity]
+  );
+  return result;
 };
 
-
-const getStockOfOptionProduct = async (queryRunner, optionProductsId, quantity) => {
-    const result = await queryRunner.query(
-        `UPDATE
+const getStockOfOptionProduct = async (
+  queryRunner,
+  optionProductsId,
+  quantity
+) => {
+  const result = await queryRunner.query(
+    `UPDATE
             option_products
         SET
             stock = stock - ?
         WHERE id = ?
         `,
-        [optionProductsId, quantity]
-    )
-    return result
-}
+    [optionProductsId, quantity]
+  );
+  return result;
+};
 
-const deleteCartAtOder = async(queryRunner, userId, optionProductsId) => {
-    const deleteCartRows = await queryRunner.query(
-        `
+const deleteCartAtOder = async (queryRunner, userId, optionProductsId) => {
+  const deleteCartRows = await queryRunner.query(
+    `
             DELETE FROM carts
             WHERE users_id = ?
             AND   option_products_id = ?
-        `, [userId, optionProductsId]
-        )
-    // .affectedRows
-    // if (Array.isArray(optionProductsId)){
-    //     if(optionProductsId.length !== deleteCartRows) {
-    //         throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')}
-    //     }
-    // else {
-    //     if (!(0,1).includes(`${deleteCartRows}`)){
-    //         throw new Error ('UNEXPECTED_NUMBER_OF_CARTS_DELETED')
-    //     }
-    return deleteCartRows
-    }
+        `,
+    [userId, optionProductsId]
+  );
+  return deleteCartRows;
+};
 
-const getOrderInfo = async(userId, cartId)=>{
-    const result = await appDataSource.query(
-        `
+const getOrderInfo = async (userId, cartId) => {
+  const result = await appDataSource.query(
+    `
             SELECT
                 u.id,
                 u.name as userName,
@@ -97,16 +105,15 @@ const getOrderInfo = async(userId, cartId)=>{
             u.id = ?
             AND
             c.id IN (?)
-        `,[userId, cartId]
-    )
-    return result   
-}
+        `,
+    [userId, cartId]
+  );
+  return result;
+};
 
-
-const getCompleteInfo =async(queryRunner, userId, optionProductsId)=>{
-
-    const result = await queryRunner.query(
-        `
+const getCompleteInfo = async (queryRunner, userId, optionProductsId) => {
+  const result = await queryRunner.query(
+    `
         SELECT
             DATE_SUB(delivery_information.arrival_date, interval 1 day) as deadline,
             order_products.quantity,
@@ -124,18 +131,19 @@ const getCompleteInfo =async(queryRunner, userId, optionProductsId)=>{
         ON delivery_information.users_id = users.id
         WHERE users.id = ?
         AND order_products.id in (?);
-        `, [userId, optionProductsId]
-    )
+        `,
+    [userId, optionProductsId]
+  );
 
-    return result
-}
+  return result;
+};
 
 module.exports = {
-    getOrderInfo,
-    getCompleteInfo,
-    deleteCartAtOder,
-    createOrder,
-    createDeliveryInformation,
-    getStockOfOptionProduct,
-    createOrderProducts,
-}
+  getOrderInfo,
+  getCompleteInfo,
+  deleteCartAtOder,
+  createOrder,
+  createDeliveryInformation,
+  getStockOfOptionProduct,
+  createOrderProducts,
+};
